@@ -1,3 +1,4 @@
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< HEAD
                           ZZZZZZ
                         ZZZZZZZZZZZZ
                       ZZZZZZZZZZZZZZZZ
@@ -85,3 +86,7 @@ All code files contain licensing information.
 For more information, see the RIOT website:
 
 http://www.riot-os.org
+====================================================================================================
+# KubOS
+A full-function real-time operating system targeting microcontrollers in space, particularly micro and nano satellites.
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 941f1c7cee8935834c6febceef889e3570a4b833
