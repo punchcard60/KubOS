@@ -3,7 +3,7 @@ This is a short version of the [Development Procedures](https://github.com/RIOT-
 
 1. Check if your code follows the [coding conventions](https://github.com/RIOT-OS/RIOT/wiki/Coding-conventions). If the code does not comply these style rules, your code will not be merged.
 
-2. The master branch should always be in a working state. The RIOT maintainers will create release tags based on this branch, whenever a milestone is completed.
+2. The master branch should always be in a working state. The KubOS maintainers will create release tags based on this branch, whenever a milestone is completed.
 
 3. Comments on a pull request should be added to the request itself, and *not* to the commit.
 
