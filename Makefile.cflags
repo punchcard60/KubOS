@@ -37,7 +37,7 @@ ifeq ($(DEBUG),)
   CFLAGS += -g0
   CFLAGS += -DNDEBUG
 else
-  CFLAGS += -g2
+  CFLAGS += -ggdb2
   CFLAGS += -DDEBUG
 endif
 

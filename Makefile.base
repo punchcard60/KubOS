@@ -2,7 +2,7 @@
 MODULE ?= $(shell basename $(CURDIR))
 MODDIR := $(abspath $(BINDIR)/$(MODULE))
 
-$(shell $(AD)mkdir -p $(MODDIR))
+$(shell mkdir -p $(MODDIR))
 
 export BASELIBS += $(MODDIR).a
 

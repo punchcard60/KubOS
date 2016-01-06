@@ -1,8 +1,8 @@
 ifeq ($(QUIET),1)
-	AD=@
+	export AD=@
 	MAKEFLAGS += --no-print-directory
 else
-	AD=
+	export AD=
 endif
 
 OS := $(shell uname)
@@ -48,8 +48,21 @@ ifneq (0, $(shell $(AR) rc $(BINDIR)/empty-archive.a 2> /dev/null; \
 endif
 
 # mandatory includes!
-MODULES += thread_manager
+MODULES += application_manager
+MODULES += messaging
 MODULES += mutex
+MODULES += peripheral_manager
+MODULES += real_time_clock
+MODULES += startup_manager
+MODULES += system_timer
+MODULES += thread_manager
+
+# optional modules
+MODULES += command_shell
+MODULES += communications
+MODULES += ota_update_manager
+MODULES += seu
+MODULES += watchdog
 
 export MODULES := $(shell echo $($(subst -,_,$(sort $(MODULES))))|tr 'a-z' 'A-Z')
 BASELIBS += $(MODULES:%=$(BINDIR)/%.a)
