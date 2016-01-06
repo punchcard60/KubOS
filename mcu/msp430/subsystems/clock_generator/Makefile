@@ -1,0 +1,2 @@
+include $(KUBOSBASE)/Makefile.base
+

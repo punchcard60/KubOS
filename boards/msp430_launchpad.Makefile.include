@@ -1,0 +1,5 @@
+
+export MCUPART := msp430f5529ipn
+export BOARDDIR := $(BOARDBASE)/$(BOARD)
+
+

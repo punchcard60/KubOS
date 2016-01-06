@@ -1,1 +1,0 @@
-include $(RIOTBOARD)/wsn430-common/Makefile.include

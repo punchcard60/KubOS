@@ -1,78 +1,38 @@
-ifeq (, $(__RIOTBUILD_FLAG))
-    $(error You cannot build a module on its own. Use "make" in your application's directory instead.)
-endif
-
-unexport DIRS
-DIRS := $(sort $(abspath ${DIRS}))
 
 MODULE ?= $(shell basename $(CURDIR))
+MODDIR := $(abspath $(BINDIR)/$(MODULE))
 
-.PHONY: all ${DIRS:%=ALL--%} ${DIRS:%=CLEAN--%}
+$(shell $(AD)mkdir -p $(MODDIR))
 
-all: $(BINDIR)$(MODULE).a ..nothing
+export BASELIBS += $(MODDIR).a
 
-..nothing:
-	@:
+SRC := $(wildcard *.c)
+ASMSRC := $(wildcard *.s)
+ASSMSRC := $(wildcard *.S)
 
-clean:: ${DIRS:%=CLEAN--%}
+OBJC    := $(SRC:%.c=$(MODDIR)/%.o)
+ASMOBJ  := $(ASMSRC:%.s=$(MODDIR)/%.o)
+ASSMOBJ := $(ASSMSRC:%.S=$(MODDIR)/%.o)
 
-${DIRS:%=ALL--%}:
-	"$(MAKE)" -C ${@:ALL--%=%}
-
-${DIRS:%=CLEAN--%}:
-	"$(MAKE)" -C ${@:CLEAN--%=%} clean
-
-ifeq ($(strip $(SRC)),)
-    SRC := $(wildcard *.c)
-endif
-ifeq ($(strip $(SRCXX)),)
-    SRCXX := $(wildcard *.cpp)
-endif
-ifeq ($(strip $(ASMSRC)),)
-    ASMSRC := $(wildcard *.s)
-endif
-ifeq ($(strip $(ASSMSRC)),)
-    ASSMSRC := $(wildcard *.S)
-endif
-
-OBJC    := $(SRC:%.c=$(BINDIR)$(MODULE)/%.o)
-OBJCXX  := $(SRCXX:%.cpp=$(BINDIR)$(MODULE)/%.o)
-ASMOBJ  := $(ASMSRC:%.s=$(BINDIR)$(MODULE)/%.o)
-ASSMOBJ := $(ASSMSRC:%.S=$(BINDIR)$(MODULE)/%.o)
-
-OBJ := $(OBJC) $(OBJCXX) $(ASMOBJ) $(ASSMOBJ)
-DEP := $(OBJC:.o=.d) $(OBJCXX:.o=.d) $(ASSMOBJ:.o=.d)
-
-$(BINDIR)$(MODULE)/:
-	$(AD)mkdir -p $@
-
-$(BINDIR)$(MODULE).a $(OBJ): | $(BINDIR)$(MODULE)/
-
-$(BINDIR)$(MODULE).a: $(OBJ) | ${DIRS:%=ALL--%}
-	$(AD)$(AR) $(ARFLAGS) $@ $?
-
-
-CXXFLAGS = $(filter-out $(CXXUWFLAGS), $(CFLAGS)) $(CXXEXFLAGS)
+OBJ := $(OBJC) $(ASMOBJ) $(ASSMOBJ)
+DEP := $(OBJC:.o=.d) $(ASMOBJ:.o=.d) $(ASSMOBJ:.o=.d)
 
 # compile and generate dependency info
+$(OBJC): $(MODDIR)/%.o: %.c
+	$(AD)$(CC) $(CFLAGS) $(INCLUDES) -MD -MP -c -o $@ $(abspath $<)
 
-$(OBJC): $(BINDIR)$(MODULE)/%.o: %.c
-	$(AD)$(CCACHE) $(CC) \
-		-DRIOT_FILE_RELATIVE=\"$(patsubst $(RIOTBASE)/%,%,$(abspath $<))\" \
-		-DRIOT_FILE_NOPATH=\"$(notdir $<)\" \
-		$(CFLAGS) $(INCLUDES) -MD -MP -c -o $@ $(abspath $<)
-
-$(OBJCXX): $(BINDIR)$(MODULE)/%.o: %.cpp
-	$(AD)$(CCACHE) $(CXX) \
-		-DRIOT_FILE_RELATIVE=\"$(patsubst $(RIOTBASE)/%,%,$(abspath $<))\" \
-		-DRIOT_FILE_NOPATH=\"$(notdir $<)\" \
-		$(CXXFLAGS) $(INCLUDES) -MD -MP -c -o $@ $(abspath $<)
-
-$(ASMOBJ): $(BINDIR)$(MODULE)/%.o: %.s
+$(ASMOBJ): $(MODDIR)/%.o: %.s
 	$(AD)$(AS) $(ASFLAGS) -o $@ $(abspath $<)
 
-$(ASSMOBJ): $(BINDIR)$(MODULE)/%.o: %.S
+$(ASSMOBJ): $(MODDIR)/%.o: %.S
 	$(AD)$(CC) $(CFLAGS) $(INCLUDES) -MD -MP -c -o $@ $(abspath $<)
+
+$(MODDIR).a: $(OBJ)
+	$(AD)$(AR) $(ARFLAGS) $@ $?
+
+.PHONY: all
+
+all: $(MODDIR).a
 
 # pull in dependency info for *existing* .o files
 # deleted header files will be silently ignored

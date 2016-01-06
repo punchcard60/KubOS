@@ -1,6 +1,0 @@
-export CPU_ARCH = cortex-m4f
-
-# includ common periph module
-USEMODULE += periph_common
-
-include $(RIOTCPU)/Makefile.include.cortexm_common

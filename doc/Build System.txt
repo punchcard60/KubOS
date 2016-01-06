@@ -1,0 +1,15 @@
+
+Application/Makefile
+	include $(RIOTBASE)/Makefile.include
+		include $(RIOTBASE)/Makefile.docker
+		
+		include $(RIOTBASE)/Makefile.scan-build
+
+		include $(RIOTBASE)/Makefile.modules
+			include $(RIOTBASE)/Makefile.pseudomodules
+
+		include $(RIOTBOARD)/$(BOARD)/Makefile.include
+		
+		include $(RIOTBASE)/Makefile.dep
+
+		include $(RIOTBASE)/Makefile.cflags

@@ -1,4 +1,0 @@
-# The static cache is huge, disable it.
-CFLAGS += -DFIXMATH_NO_CACHE
-
-INCLUDES += -I$(BINDIR)libfixmath-headers/

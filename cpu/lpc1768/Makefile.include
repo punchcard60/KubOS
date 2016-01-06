@@ -1,3 +1,0 @@
-export CPU_ARCH = cortex-m3
-
-include $(RIOTCPU)/Makefile.include.cortexm_common

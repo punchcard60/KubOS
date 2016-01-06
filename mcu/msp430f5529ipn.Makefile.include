@@ -1,0 +1,35 @@
+export MCUPACKAGE := PN80
+export MCU := msp430f5529
+# if MCUFAMILY isn't needed, don't define it.
+export MCUFAMILY := msp430
+export MCUDIR := $(MCUBASE)/$(MCUFAMILY)/$(MCU)
+
+export CPU := msp430xv2
+# export CPUFAMILY := xxx
+export CPUDIR := $(CPUBASE)/$(CPU)
+
+# default toolchain prefix
+export PREFIX ?= msp430-elf-
+
+# define build specific options
+
+# Set the cpu for the compiler
+CFLAGS  += -mmcu=$(CPU)
+
+# Turn on runtime minimization
+CFLAGS += -minrt
+
+# export compiler flags
+export CFLAGS
+
+# export assembly flags
+export ASFLAGS += -mmcu=$(CPU)
+
+# export linker flags
+export LINKFLAGS += -T $(MCUDIR)/include/$(MCU).ld
+
+export SUBSYSTEMDIR := $(MCUBASE)/$(MCUFAMILY)/subsystems
+export SUBSYSTEMS := clock_generator interrupt_manager
+
+export PERIPHERALDIR := $(MCUBASE)/$(MCUFAMILY)/peripherals
+export PERIPHERALS := dio

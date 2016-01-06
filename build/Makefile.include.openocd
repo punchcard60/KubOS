@@ -1,0 +1,10 @@
+export FLASHER = $(KUBOSBASE)/build/openocd/openocd.sh
+export DEBUGGER = $(KUBOSBASE)/build/openocd/openocd.sh
+export DEBUGSERVER = $(KUBOSBASE)/build/openocd/openocd.sh
+export RESET = $(KUBOSBASE)/build/openocd/openocd.sh
+
+export OFLAGS ?= -O ihex
+export FFLAGS ?= flash
+export DEBUGGER_FLAGS ?= debug
+export DEBUGSERVER_FLAGS ?= debug-server
+export RESET_FLAGS ?= reset
